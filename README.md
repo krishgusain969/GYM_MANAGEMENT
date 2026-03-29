@@ -1,16 +1,200 @@
-# Gym Management System (MongoDB Version)
+# Gym Management System (SQLite Version)
 
 A smart gym management system that helps reduce overcrowding by analyzing crowd patterns and suggesting optimal workout times.
 
 ## 🎯 Features
 
-- **🔐 User Authentication** - Registration and login system
+- **🔐 User Authentication** - Registration and login system with validation
 - **📋 Workout Split Setup** - Configure weekly workout schedules
-- **👥 Crowd Analysis** - Real-time gym crowd level monitoring
-- **🎯 Smart Recommendations** - AI-powered time slot suggestions
-- **📱 Responsive Design** - Works on all devices
+- **👥 Crowd Analysis** - Real-time gym crowd level monitoring (simulated)
+- **🎯 Smart Recommendations** - AI-powered time slot suggestions based on fitness level
+- **📱 Responsive Design** - Works on all devices with modern UI
+- **🗄️ SQLite Database** - Simple file-based database, no setup required
 
 ## 🛠️ Technology Stack
+
+### Backend
+- **Java** - Core application logic
+- **Java HttpServer** - Built-in HTTP server
+- **SQLite** - Database for data persistence
+- **JDBC** - Database connectivity
+
+### Frontend
+- **HTML5** - Semantic markup
+- **CSS3** - Modern styling with animations
+- **JavaScript (Vanilla)** - Interactive functionality
+- **Responsive Design** - Mobile-first approach
+
+### Database
+- **SQLite** - File-based database (gym_management.db)
+- **Auto-initialization** - Tables and sample data created automatically
+
+## 📁 Project Structure
+
+```
+gym_managementv1/
+├── src/                    # Java backend source files
+│   ├── Main.java           # Application entry point
+│   ├── Server.java         # HTTP server and routing
+│   ├── DatabaseConnection.java  # SQLite database management
+│   ├── UserHandler.java    # User authentication logic
+│   ├── SplitHandler.java   # Workout split management
+│   ├── CrowdHandler.java   # Crowd analysis simulation
+│   └── RecommendationHandler.java  # Smart recommendations
+├── frontend/               # Web interface files
+│   ├── index.html         # Login/registration page
+│   ├── dashboard.html     # Main dashboard interface
+│   └── style.css          # Complete styling system
+├── database/               # Database setup files
+│   └── setup.sql          # SQLite schema reference
+├── run.bat               # Application startup script
+├── sqlite-jdbc-3.45.1.0.jar  # SQLite JDBC driver
+└── README.md             # This documentation file
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+- **Java 8+** installed
+- **SQLite JDBC driver** (included)
+
+### Running the Application
+
+1. **Clone or download** the project
+2. **Navigate** to the project directory
+3. **Run the application:**
+   ```bash
+   run.bat
+   ```
+4. **Open browser** to `http://localhost:8080`
+5. **Register** a new account or login with existing credentials
+
+### Sample Login Credentials
+- **Username:** john_doe
+- **Password:** pass123
+
+## 📊 Database Schema
+
+### Users Table
+```sql
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE,
+    password TEXT,
+    name TEXT,
+    age INTEGER,
+    membership TEXT,
+    fitness_level TEXT
+);
+```
+
+### Workout Splits Table
+```sql
+CREATE TABLE workout_splits (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    day_of_week TEXT,
+    body_part TEXT,
+    preferred_time TEXT
+);
+```
+
+## 🔧 API Endpoints
+
+### User Management
+- `POST /register` - Create new user account
+- `POST /login` - Authenticate user credentials
+
+### Workout Management
+- `POST /split` - Create workout split
+- `GET /split?username=X` - Get user's workout splits
+
+### Features
+- `GET /crowd` - Get crowd analysis (simulated)
+- `GET /recommend?username=X` - Get workout recommendations
+
+## 🎨 UI Features
+
+### Login/Register Page
+- Modern glass morphism design
+- Form validation and error handling
+- Smooth transitions between modes
+- Responsive layout
+
+### Dashboard
+- Tabbed navigation system
+- Real-time data fetching
+- Interactive forms
+- Mobile-responsive design
+
+## 🔧 Configuration
+
+### Database Connection
+The application uses SQLite with automatic database creation. No additional configuration required.
+
+### Server Configuration
+- **Port:** 8080
+- **Host:** localhost
+- **Static Files:** Served from `frontend/` directory
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Port 8080 in use:**
+   - Stop other services using port 8080
+   - Or modify the port in `Server.java`
+
+2. **SQLite driver not found:**
+   - Ensure `sqlite-jdbc-3.45.1.0.jar` is in the project directory
+   - The `run.bat` script will download it automatically if missing
+
+3. **Registration fails:**
+   - Check browser console for JavaScript errors
+   - Verify server is running and accessible
+
+### Debug Mode
+- Check server console for detailed error messages
+- Use browser developer tools for frontend debugging
+- Database file: `gym_management.db` (created automatically)
+
+## 📝 Development Notes
+
+### Architecture
+- **MVC Pattern** - Separation of concerns
+- **RESTful API** - Standard HTTP methods
+- **CORS Enabled** - Cross-origin requests supported
+- **Error Handling** - Comprehensive error management
+
+### Security Notes
+- **Demo Application** - Passwords stored in plain text for simplicity
+- **Production Ready** - Add password hashing and input validation
+- **Session Management** - Basic session storage
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
+
+This project is for educational purposes. Feel free to use and modify as needed.
+
+## 📞 Support
+
+For issues and questions:
+- Check the troubleshooting section
+- Review the code comments
+- Test with the provided sample credentials
+
+---
+
+**Version:** 1.0  
+**Last Updated:** 2024  
+**Author:** Gym Management System Team
 
 - **Backend**: Plain Java (Java 8+)
 - **Database**: MongoDB

@@ -1,0 +1,48 @@
+﻿Testing DB...
+java : Exception in 
+thread "main" java.lang.No
+ClassDefFoundError: 
+org/slf4j/LoggerFactory
+At line:1 char:1
++ java -cp ".;sqlite-jdbc-
+3.45.1.0.jar" src.TestDB 
+> test_out.txt 2>&1; ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (E  
+  xception in th...j/Lo   
+ ggerFactory:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+	at org.sqlite.JDBC.<clini
+t>(JDBC.java:26)
+	at java.base/java.lang.Cl
+ass.forName0(Native 
+Method)
+	at java.base/java.lang.Cl
+ass.forName(Class.java:467
+)
+	at java.base/java.lang.Cl
+ass.forName(Class.java:458
+)
+	at src.DatabaseConnection
+.getConnection(DatabaseCon
+nection.java:20)
+	at src.TestDB.main(TestDB
+.java:5)
+Caused by: java.lang.Class
+NotFoundException: 
+org.slf4j.LoggerFactory
+	at java.base/jdk.internal
+.loader.BuiltinClassLoader
+.loadClass(BuiltinClassLoa
+der.java:580)
+	at java.base/java.lang.Cl
+assLoader.loadClass(ClassL
+oader.java:490)
+	... 6 more

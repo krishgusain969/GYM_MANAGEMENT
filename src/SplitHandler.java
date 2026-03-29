@@ -1,3 +1,29 @@
+/**
+ * SplitHandler.java
+ * 
+ * PURPOSE: Workout split management for the Gym Management System
+ * 
+ * This file handles workout schedule management, allowing users to create,
+ * store, and retrieve their weekly workout plans. It manages which body parts
+ * users train on specific days and their preferred time slots.
+ * 
+ * RESPONSIBILITIES:
+ * - Process workout split creation requests
+ * - Store user workout schedules in database
+ * - Retrieve existing workout splits for users
+ * - Handle form data parsing for split information
+ * - Provide proper error handling and user feedback
+ * - Enable CORS for cross-origin requests
+ * 
+ * API ENDPOINTS HANDLED:
+ * - POST /split -> Create new workout split
+ * - GET /split?username=X -> Retrieve user's workout splits
+ * 
+ * AUTHOR: Gym Management System
+ * VERSION: 1.0
+ * DATABASE: SQLite
+ */
+
 package src;
 
 import com.sun.net.httpserver.HttpExchange;

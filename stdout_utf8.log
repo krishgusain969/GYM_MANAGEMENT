@@ -1,0 +1,8 @@
+﻿=================================
+  SMART GYM MANAGEMENT SYSTEM
+=================================
+Database: MySQL (via JDBC)
+Server  : Java Built-in HttpServer
+
+Ensure your MySQL database `gym_db` is created and running.
+Starting server...

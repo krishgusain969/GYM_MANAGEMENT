@@ -1,4 +1,34 @@
 <!DOCTYPE html>
+<!--
+    dashboard.html
+    
+    PURPOSE: Main dashboard interface for authenticated users
+    
+    This file provides the core user interface for the gym management system after
+    successful authentication. It features a tabbed interface with workout split
+    management, crowd analysis, and smart recommendations. The dashboard includes
+    real-time data fetching, form handling, and responsive design.
+    
+    FEATURES:
+    - User profile display and welcome message
+    - Tabbed navigation system
+    - Workout split setup and management
+    - Crowd analysis visualization
+    - Smart workout recommendations
+    - Session management and logout
+    - Responsive design for all devices
+    - Real-time API integration
+    
+    API ENDPOINTS USED:
+    - GET /split?username=X - Retrieve user workout splits
+    - POST /split - Create new workout split
+    - GET /crowd - Get crowd analysis data
+    - GET /recommend?username=X - Get workout recommendations
+    
+    AUTHOR: Gym Management System
+    VERSION: 1.0
+    FRAMEWORK: HTML5, CSS3, JavaScript (vanilla)
+-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,32 +52,39 @@
         <!-- Dashboard Cards -->
         <div class="dashboard">
             <!-- Setup Split Card -->
-            <div class="dashboard-card">
+            <div class="dashboard-card" onclick="showSplitSetup()">
                 <h3>📋 Setup Workout Split</h3>
                 <p>Configure your weekly workout schedule</p>
-                <button class="btn btn-primary" onclick="showSplitSetup()">Setup Split</button>
+                <button class="btn btn-primary">Setup Split</button>
             </div>
 
             <!-- View Crowd Card -->
-            <div class="dashboard-card">
+            <div class="dashboard-card" onclick="showCrowdAnalysis()">
                 <h3>👥 View Crowd Analysis</h3>
                 <p>See current gym crowd levels</p>
-                <button class="btn btn-secondary" onclick="showCrowdAnalysis()">View Crowd</button>
+                <button class="btn btn-secondary">View Crowd</button>
             </div>
 
             <!-- Get Recommendation Card -->
-            <div class="dashboard-card">
+            <div class="dashboard-card" onclick="showRecommendation()">
                 <h3>🎯 Get Smart Recommendation</h3>
                 <p>Find the best time for your workout</p>
-                <button class="btn btn-warning" onclick="showRecommendation()">Get Recommendation</button>
+                <button class="btn btn-warning">Get Recommendation</button>
             </div>
 
             <!-- Logout Card -->
-            <div class="dashboard-card">
+            <div class="dashboard-card" onclick="logout()">
                 <h3>🚪 Logout</h3>
                 <p>Sign out of your account</p>
-                <button class="btn btn-danger" onclick="logout()">Logout</button>
+                <button class="btn btn-danger">Logout</button>
             </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <div class="tab-btn active" onclick="showSplitSetup()">Workout Split</div>
+            <div class="tab-btn" onclick="showCrowdAnalysis()">Crowd Analysis</div>
+            <div class="tab-btn" onclick="showRecommendation()">Recommendations</div>
         </div>
 
         <!-- Content Sections -->
@@ -187,16 +224,39 @@
 
         // Show/hide content sections
         function showSection(sectionId) {
+            console.log('Showing section:', sectionId);
+            
             // Hide all sections
             const sections = document.querySelectorAll('.content-section');
+            console.log('Found sections:', sections.length);
             sections.forEach(section => {
                 section.classList.remove('active');
+                console.log('Hiding section:', section.id);
             });
 
             // Show selected section
             const selectedSection = document.getElementById(sectionId);
             if (selectedSection) {
                 selectedSection.classList.add('active');
+                console.log('Showing section:', sectionId);
+                
+                // Update tab buttons
+                const tabButtons = document.querySelectorAll('.tab-btn');
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Set active tab button based on section
+                if (sectionId === 'splitSection') {
+                    tabButtons[0].classList.add('active');
+                } else if (sectionId === 'crowdSection') {
+                    tabButtons[1].classList.add('active');
+                } else if (sectionId === 'recommendationSection') {
+                    tabButtons[2].classList.add('active');
+                }
+                
+                // Scroll to the section smoothly
+                selectedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                console.error('Section not found:', sectionId);
             }
         }
 
@@ -344,7 +404,7 @@
                     window.location.href = 'index.html';
                 }, 1000);
             }
-        });
+        }
 
         // Add keyboard shortcuts
         document.addEventListener('keydown', function(e) {

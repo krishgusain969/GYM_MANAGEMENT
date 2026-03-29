@@ -14,6 +14,16 @@ if not exist "sqlite-jdbc-3.45.1.0.jar" (
     exit /b 1
 )
 
+REM Check if SLF4J dependencies exist
+if not exist "slf4j-api-1.7.36.jar" (
+    echo Downloading SLF4J API...
+    curl -L -o slf4j-api-1.7.36.jar "https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar"
+)
+if not exist "slf4j-simple-1.7.36.jar" (
+    echo Downloading SLF4J Simple...
+    curl -L -o slf4j-simple-1.7.36.jar "https://repo1.maven.org/maven2/org/slf4j/slf4j-simple/1.7.36/slf4j-simple-1.7.36.jar"
+)
+
 REM Check if src directory exists
 if not exist "src" (
     echo Source directory not found!
@@ -24,7 +34,7 @@ if not exist "src" (
 )
 
 echo Compiling Java files with SQLite...
-javac -cp ".;sqlite-jdbc-3.45.1.0.jar" src\*.java
+javac -cp ".;sqlite-jdbc-3.45.1.0.jar;slf4j-api-1.7.36.jar;slf4j-simple-1.7.36.jar" src\*.java
 
 if %errorlevel% neq 0 (
     echo.
@@ -41,6 +51,6 @@ echo Using SQLite database (gym_management.db)
 echo Press Ctrl+C to stop the server
 echo.
 
-java -cp ".;sqlite-jdbc-3.45.1.0.jar" src.Main
+java -cp ".;sqlite-jdbc-3.45.1.0.jar;slf4j-api-1.7.36.jar;slf4j-simple-1.7.36.jar" src.Main
 
 pause

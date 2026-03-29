@@ -1,5 +1,41 @@
-/* Gym Management System Stylesheet */
-/* Clean, modern gym-themed design with dark background */
+/*
+    style.css
+    
+    PURPOSE: Comprehensive styling for the Gym Management System
+    
+    This stylesheet provides the complete visual design for the gym management system
+    including login/registration pages, dashboard interface, and responsive layouts.
+    It features a modern gym-themed design with gradient backgrounds, glass morphism
+    effects, and smooth animations.
+    
+    DESIGN FEATURES:
+    - Modern gradient backgrounds (gym-themed blue tones)
+    - Glass morphism cards with backdrop blur
+    - Responsive grid layouts
+    - Smooth animations and transitions
+    - Custom button styles with hover effects
+    - Tab navigation system
+    - Form styling with focus states
+    - Alert system styling
+    - Mobile-responsive design
+    - Loading spinner animations
+    
+    COLOR SCHEME:
+    - Primary: Blue gradients (#1e3c72 to #2a5298)
+    - Accent: Green (#4CAF50) for success/actions
+    - Warning: Orange (#FF9800) for notifications
+    - Danger: Red (#f44336) for errors
+    - Background: Dark blue with transparency effects
+    
+    BREAKPOINTS:
+    - Desktop: 1200px+ (full grid layout)
+    - Tablet: 768px-1199px (adjusted grid)
+    - Mobile: <768px (single column layout)
+    
+    AUTHOR: Gym Management System
+    VERSION: 1.0
+    FRAMEWORK: CSS3 with modern features
+*/
 
 /* Reset and base styles */
 * {
@@ -194,6 +230,43 @@ body {
     color: #4CAF50;
 }
 
+/* Tab navigation styles */
+.tab-navigation {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 5px;
+    backdrop-filter: blur(10px);
+}
+
+.tab-btn {
+    padding: 15px 30px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    margin: 0 5px;
+}
+
+.tab-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.tab-btn.active {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
 /* Content section styles */
 .content-section {
     background: rgba(255, 255, 255, 0.05);
@@ -293,6 +366,16 @@ pre {
     .btn {
         width: 100%;
         margin: 5px 0;
+    }
+    
+    .tab-navigation {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .tab-btn {
+        margin: 0;
+        text-align: center;
     }
 }
 

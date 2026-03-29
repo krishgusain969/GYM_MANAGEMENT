@@ -1,3 +1,30 @@
+/**
+ * CrowdHandler.java
+ * 
+ * PURPOSE: Gym crowd analysis simulation for the Gym Management System
+ * 
+ * This file provides simulated crowd analysis data to help users choose
+ * optimal workout times. It generates random crowd levels and status
+ * information to demonstrate the system's crowd monitoring capabilities.
+ * 
+ * RESPONSIBILITIES:
+ * - Generate simulated crowd analysis data
+ * - Process crowd level requests
+ * - Provide crowd status indicators (Low/Moderate/High)
+ * - Handle query parameters for day/time filtering
+ * - Enable CORS for cross-origin requests
+ * 
+ * API ENDPOINTS HANDLED:
+ * - GET /crowd?day=X&time=Y -> Get crowd analysis for specific day/time
+ * 
+ * NOTE: This is a simulation implementation. In production, this would
+ * integrate with real gym occupancy sensors or booking data.
+ * 
+ * AUTHOR: Gym Management System
+ * VERSION: 1.0
+ * DATABASE: None (simulation)
+ */
+
 package src;
 
 import com.sun.net.httpserver.HttpExchange;

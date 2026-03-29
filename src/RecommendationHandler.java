@@ -1,3 +1,32 @@
+/**
+ * RecommendationHandler.java
+ * 
+ * PURPOSE: Smart workout recommendations for the Gym Management System
+ * 
+ * This file provides personalized workout recommendations based on user's
+ * fitness level and preferences. It analyzes user profiles and suggests
+ * appropriate workout routines and optimal timing for gym sessions.
+ * 
+ * RESPONSIBILITIES:
+ * - Generate personalized workout recommendations
+ * - Analyze user fitness levels and preferences
+ * - Provide exercise suggestions based on fitness level
+ * - Handle recommendation requests with user parameters
+ * - Enable CORS for cross-origin requests
+ * 
+ * API ENDPOINTS HANDLED:
+ * - GET /recommend?username=X -> Get recommendations for specific user
+ * 
+ * RECOMMENDATION LOGIC:
+ * - Beginner: Light cardio, basic strength, stretching, bodyweight exercises
+ * - Intermediate: Moderate cardio, intermediate strength, core work, mixed exercises
+ * - Advanced: HIIT training, advanced strength, powerlifting, CrossFit circuits
+ * 
+ * AUTHOR: Gym Management System
+ * VERSION: 1.0
+ * DATABASE: SQLite (user profile data)
+ */
+
 package src;
 
 import com.sun.net.httpserver.HttpExchange;
