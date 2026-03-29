@@ -1,0 +1,4 @@
+*.jar
+node_modules/
+.env
+target/
