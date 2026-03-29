@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Management System - Login/Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💪 Gym Management System</h1>
+            <p>Smart crowd analysis and workout scheduling</p>
+        </div>
+
+        <div class="card">
+            <!-- Toggle between Login and Register -->
+            <div class="toggle-container">
+                <button class="btn toggle-btn" onclick="toggleForm()">
+                    <span id="toggleText">Switch to Register</span>
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="form-container">
+                <h2>🔐 Login</h2>
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginUsername">Username</label>
+                        <input type="text" id="loginUsername" name="username" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="form-container" style="display: none;">
+                <h2>📝 Register New Account</h2>
+                <form id="registerFormElement">
+                    <div class="form-group">
+                        <label for="registerUsername">Username</label>
+                        <input type="text" id="registerUsername" name="username" placeholder="Choose a username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" name="password" placeholder="Choose a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerName">Full Name</label>
+                        <input type="text" id="registerName" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerAge">Age</label>
+                        <input type="number" id="registerAge" name="age" placeholder="Enter your age" min="16" max="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerMembership">Membership Type</label>
+                        <select id="registerMembership" name="membership" required>
+                            <option value="">Select membership type</option>
+                            <option value="monthly">Monthly ($29/month)</option>
+                            <option value="quarterly">Quarterly ($79/3 months)</option>
+                            <option value="annual">Annual ($299/year)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerFitness">Fitness Level</label>
+                        <select id="registerFitness" name="fitness_level" required>
+                            <option value="">Select fitness level</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Alert Messages -->
+        <div id="alertContainer"></div>
+    </div>
+
+    <script>
+        // Global variables
+        let isLoginMode = true;
+
+        // Toggle between login and register forms
+        function toggleForm() {
+            isLoginMode = !isLoginMode;
+            
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const toggleText = document.getElementById('toggleText');
+            
+            if (isLoginMode) {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                toggleText.textContent = 'Switch to Register';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                toggleText.textContent = 'Switch to Login';
+            }
+            
+            // Clear any existing alerts
+            clearAlerts();
+        }
+
+        // Show alert message
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            alertContainer.appendChild(alertDiv);
+            
+            // Auto-remove alert after 5 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // Clear all alerts
+        function clearAlerts() {
+            const alertContainer = document.getElementById('alertContainer');
+            alertContainer.innerHTML = '';
+        }
+
+        // Handle login form submission
+        document.getElementById('loginFormElement').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = '<span class="loading"></span> Logging in...';
+            submitBtn.disabled = true;
+            
+            // Send login request
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(data)
+            })
+            .then(response => response.text())
+            .then(result => {
+                if (result.includes('Login successful')) {
+                    showAlert('Login successful! Redirecting to dashboard...', 'success');
+                    // Store username in session storage
+                    sessionStorage.setItem('username', data.username);
+                    // Redirect to dashboard after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 2000);
+                } else {
+                    showAlert('Invalid username or password', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                showAlert('Login failed. Please try again.', 'error');
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Handle register form submission
+        document.getElementById('registerFormElement').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Validate age
+            if (data.age < 16 || data.age > 100) {
+                showAlert('Age must be between 16 and 100', 'error');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = '<span class="loading"></span> Registering...';
+            submitBtn.disabled = true;
+            
+            // Send register request
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(data)
+            })
+            .then(response => response.text())
+            .then(result => {
+                if (result.includes('Registration successful')) {
+                    showAlert('Registration successful! Please login...', 'success');
+                    // Clear form
+                    this.reset();
+                    // Switch to login form after 2 seconds
+                    setTimeout(() => {
+                        toggleForm();
+                    }, 2000);
+                } else if (result.includes('Username already exists')) {
+                    showAlert('Username already exists. Please choose another.', 'error');
+                } else {
+                    showAlert('Registration failed. Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Registration error:', error);
+                showAlert('Registration failed. Please try again.', 'error');
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Add input validation
+        document.getElementById('registerAge').addEventListener('input', function(e) {
+            const value = parseInt(e.target.value);
+            if (value < 16 || value > 100) {
+                e.target.setCustomValidity('Age must be between 16 and 100');
+            } else {
+                e.target.setCustomValidity('');
+            }
+        });
+
+        // Add username validation
+        document.getElementById('registerUsername').addEventListener('input', function(e) {
+            const value = e.target.value;
+            if (value.length < 3) {
+                e.target.setCustomValidity('Username must be at least 3 characters');
+            } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+                e.target.setCustomValidity('Username can only contain letters, numbers, and underscores');
+            } else {
+                e.target.setCustomValidity('');
+            }
+        });
+
+        // Add password validation
+        document.getElementById('registerPassword').addEventListener('input', function(e) {
+            const value = e.target.value;
+            if (value.length < 6) {
+                e.target.setCustomValidity('Password must be at least 6 characters');
+            } else {
+                e.target.setCustomValidity('');
+            }
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            const username = sessionStorage.getItem('username');
+            if (username) {
+                // Redirect to dashboard if already logged in
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

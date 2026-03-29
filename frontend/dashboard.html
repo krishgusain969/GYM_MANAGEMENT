@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Management System - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💪 Gym Management System</h1>
+            <p>Smart crowd analysis and workout scheduling</p>
+        </div>
+
+        <!-- Welcome Message -->
+        <div class="welcome-message">
+            <h2 id="welcomeMessage">Welcome to Your Dashboard!</h2>
+            <p id="userProfile">Loading your profile...</p>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard">
+            <!-- Setup Split Card -->
+            <div class="dashboard-card">
+                <h3>📋 Setup Workout Split</h3>
+                <p>Configure your weekly workout schedule</p>
+                <button class="btn btn-primary" onclick="showSplitSetup()">Setup Split</button>
+            </div>
+
+            <!-- View Crowd Card -->
+            <div class="dashboard-card">
+                <h3>👥 View Crowd Analysis</h3>
+                <p>See current gym crowd levels</p>
+                <button class="btn btn-secondary" onclick="showCrowdAnalysis()">View Crowd</button>
+            </div>
+
+            <!-- Get Recommendation Card -->
+            <div class="dashboard-card">
+                <h3>🎯 Get Smart Recommendation</h3>
+                <p>Find the best time for your workout</p>
+                <button class="btn btn-warning" onclick="showRecommendation()">Get Recommendation</button>
+            </div>
+
+            <!-- Logout Card -->
+            <div class="dashboard-card">
+                <h3>🚪 Logout</h3>
+                <p>Sign out of your account</p>
+                <button class="btn btn-danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Content Sections -->
+        <!-- Split Setup Section -->
+        <div id="splitSection" class="content-section">
+            <h3>📋 Setup Your Workout Split</h3>
+            <form id="splitForm">
+                <div class="form-group">
+                    <label for="splitDay">Day of Week</label>
+                    <select id="splitDay" name="day_of_week" required>
+                        <option value="">Select day</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="splitBodyPart">Body Part</label>
+                    <select id="splitBodyPart" name="body_part" required>
+                        <option value="">Select body part</option>
+                        <option value="Chest">Chest</option>
+                        <option value="Back">Back</option>
+                        <option value="Legs">Legs</option>
+                        <option value="Shoulders">Shoulders</option>
+                        <option value="Arms">Arms</option>
+                        <option value="Core">Core</option>
+                        <option value="Full Body">Full Body</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="splitTime">Preferred Time</label>
+                    <select id="splitTime" name="preferred_time" required>
+                        <option value="">Select time slot</option>
+                        <option value="Morning">Morning (6-10AM)</option>
+                        <option value="Afternoon">Afternoon (12-4PM)</option>
+                        <option value="Evening">Evening (5-9PM)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Split</button>
+                <button type="button" class="btn btn-secondary" onclick="viewMySplits()">View My Splits</button>
+            </form>
+            <div id="mySplitsResult"></div>
+        </div>
+
+        <!-- Crowd Analysis Section -->
+        <div id="crowdSection" class="content-section">
+            <h3>👥 Gym Crowd Analysis</h3>
+            <button class="btn btn-secondary" onclick="loadCrowdAnalysis()">Refresh Analysis</button>
+            <div id="crowdResult">Click "Refresh Analysis" to load current crowd data...</div>
+        </div>
+
+        <!-- Recommendation Section -->
+        <div id="recommendationSection" class="content-section">
+            <h3>🎯 Smart Workout Recommendation</h3>
+            <form id="recommendationForm">
+                <div class="form-group">
+                    <label for="recommendBodyPart">Body Part</label>
+                    <select id="recommendBodyPart" name="body_part" required>
+                        <option value="">Select body part</option>
+                        <option value="Chest">Chest</option>
+                        <option value="Back">Back</option>
+                        <option value="Legs">Legs</option>
+                        <option value="Shoulders">Shoulders</option>
+                        <option value="Arms">Arms</option>
+                        <option value="Core">Core</option>
+                        <option value="Full Body">Full Body</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="recommendTime">Preferred Time</label>
+                    <select id="recommendTime" name="preferred_time" required>
+                        <option value="">Select time slot</option>
+                        <option value="Morning">Morning (6-10AM)</option>
+                        <option value="Afternoon">Afternoon (12-4PM)</option>
+                        <option value="Evening">Evening (5-9PM)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-warning">Get Recommendation</button>
+            </form>
+            <div id="recommendationResult"></div>
+        </div>
+    </div>
+
+    <!-- Alert Messages -->
+    <div id="alertContainer"></div>
+
+    <script>
+        // Global variables
+        let currentUsername = '';
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            currentUsername = sessionStorage.getItem('username');
+            if (!currentUsername) {
+                // Redirect to login if not logged in
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Load user profile
+            loadUserProfile();
+        });
+
+        // Load user profile
+        function loadUserProfile() {
+            // For demo purposes, we'll show a simple welcome message
+            // In a real app, you'd fetch this from the server
+            document.getElementById('welcomeMessage').textContent = `Welcome, ${currentUsername}!`;
+            document.getElementById('userProfile').textContent = 'Ready to optimize your workout schedule?';
+        }
+
+        // Show alert message
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            alertContainer.appendChild(alertDiv);
+            
+            // Auto-remove alert after 5 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // Clear all alerts
+        function clearAlerts() {
+            const alertContainer = document.getElementById('alertContainer');
+            alertContainer.innerHTML = '';
+        }
+
+        // Show/hide content sections
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+        }
+
+        // Dashboard button handlers
+        function showSplitSetup() {
+            showSection('splitSection');
+        }
+
+        function showCrowdAnalysis() {
+            showSection('crowdSection');
+            loadCrowdAnalysis();
+        }
+
+        function showRecommendation() {
+            showSection('recommendationSection');
+        }
+
+        // Split setup form handler
+        document.getElementById('splitForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Add username to data
+            data.username = currentUsername;
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = '<span class="loading"></span> Saving...';
+            submitBtn.disabled = true;
+            
+            // Send split data
+            fetch('/split', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(data)
+            })
+            .then(response => response.text())
+            .then(result => {
+                if (result.includes('saved successfully')) {
+                    showAlert('Workout split saved successfully!', 'success');
+                    this.reset();
+                } else {
+                    showAlert('Failed to save workout split', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Split save error:', error);
+                showAlert('Failed to save workout split', 'error');
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // View user splits
+        function viewMySplits() {
+            const resultDiv = document.getElementById('mySplitsResult');
+            resultDiv.innerHTML = '<div class="loading"></div> Loading your splits...';
+            
+            fetch(`/split?username=${encodeURIComponent(currentUsername)}`)
+            .then(response => response.text())
+            .then(result => {
+                resultDiv.innerHTML = `<pre>${result}</pre>`;
+            })
+            .catch(error => {
+                console.error('Split load error:', error);
+                resultDiv.innerHTML = 'Error loading your splits';
+            });
+        }
+
+        // Load crowd analysis
+        function loadCrowdAnalysis() {
+            const resultDiv = document.getElementById('crowdResult');
+            resultDiv.innerHTML = '<div class="loading"></div> Loading crowd analysis...';
+            
+            fetch('/crowd')
+            .then(response => response.text())
+            .then(result => {
+                resultDiv.innerHTML = `<pre>${result}</pre>`;
+            })
+            .catch(error => {
+                console.error('Crowd analysis error:', error);
+                resultDiv.innerHTML = 'Error loading crowd analysis';
+            });
+        }
+
+        // Recommendation form handler
+        document.getElementById('recommendationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = '<span class="loading"></span> Getting recommendation...';
+            submitBtn.disabled = true;
+            
+            // Get recommendation
+            fetch(`/recommend?body_part=${encodeURIComponent(data.body_part)}&preferred_time=${encodeURIComponent(data.preferred_time)}`)
+            .then(response => response.text())
+            .then(result => {
+                const resultDiv = document.getElementById('recommendationResult');
+                resultDiv.innerHTML = `<div class="recommendation"><pre>${result}</pre></div>`;
+            })
+            .catch(error => {
+                console.error('Recommendation error:', error);
+                const resultDiv = document.getElementById('recommendationResult');
+                resultDiv.innerHTML = 'Error getting recommendation';
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear session storage
+                sessionStorage.removeItem('username');
+                
+                // Show logout message
+                showAlert('Logging out...', 'success');
+                
+                // Redirect to login page after 1 second
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            }
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+L for logout
+            if (e.ctrlKey && e.key === 'l') {
+                e.preventDefault();
+                logout();
+            }
+            
+            // Ctrl+S for split setup
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                showSplitSetup();
+            }
+            
+            // Ctrl+C for crowd analysis
+            if (e.ctrlKey && e.key === 'c') {
+                e.preventDefault();
+                showCrowdAnalysis();
+            }
+            
+            // Ctrl+R for recommendation
+            if (e.ctrlKey && e.key === 'r') {
+                e.preventDefault();
+                showRecommendation();
+            }
+        });
+    </script>
+</body>
+</html>
