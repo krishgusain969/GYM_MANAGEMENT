@@ -1,33 +1,33 @@
-CREATE DATABASE IF NOT EXISTS gym_db;
-USE gym_db;
+-- SQLite Database Setup for Gym Management System
+-- This file is for reference only - the database is auto-created by the application
 
 -- Table 1: users
 CREATE TABLE IF NOT EXISTS users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(50) UNIQUE,
-  password VARCHAR(100),
-  name VARCHAR(100),
-  age INT,
-  membership VARCHAR(20),
-  fitness_level VARCHAR(20)
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE,
+  password TEXT,
+  name TEXT,
+  age INTEGER,
+  membership TEXT,
+  fitness_level TEXT
 );
 
 -- Table 2: workout_splits
 CREATE TABLE IF NOT EXISTS workout_splits (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(50),
-  day_of_week VARCHAR(10),
-  body_part VARCHAR(30),
-  preferred_time VARCHAR(20)
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT,
+  day_of_week TEXT,
+  body_part TEXT,
+  preferred_time TEXT
 );
 
 -- Sample inserts for users to see data right away
-INSERT IGNORE INTO users (username, password, name, age, membership, fitness_level) VALUES
+INSERT OR IGNORE INTO users (username, password, name, age, membership, fitness_level) VALUES
 ('john_doe', 'pass123', 'John Doe', 25, 'monthly', 'intermediate'),
 ('jane_smith', 'pass456', 'Jane Smith', 28, 'annual', 'advanced');
 
 -- Sample inserts for splits
-INSERT IGNORE INTO workout_splits (username, day_of_week, body_part, preferred_time) VALUES
+INSERT OR IGNORE INTO workout_splits (username, day_of_week, body_part, preferred_time) VALUES
 ('john_doe', 'Monday', 'Chest', 'Morning 6-10AM'),
 ('john_doe', 'Tuesday', 'Back', 'Afternoon 12-4PM'),
 ('jane_smith', 'Monday', 'Chest', 'Morning 6-10AM'),

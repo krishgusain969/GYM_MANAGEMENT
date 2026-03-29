@@ -80,12 +80,15 @@ public class UserHandler {
                     os.write(res.getBytes());
                     os.close();
                 } catch (NumberFormatException e) {
-                    String res = "Invalid age format";
+                    System.err.println("Number format error in registration: " + e.getMessage());
+                    String res = "Invalid age format. Please enter a valid number.";
                     exchange.sendResponseHeaders(400, res.length());
                     OutputStream os = exchange.getResponseBody();
                     os.write(res.getBytes());
                     os.close();
                 } catch (Exception e) {
+                    System.err.println("Database error in registration: " + e.getMessage());
+                    e.printStackTrace();
                     String res = "Registration failed. Please try again.";
                     exchange.sendResponseHeaders(500, res.length());
                     OutputStream os = exchange.getResponseBody();
@@ -128,6 +131,7 @@ public class UserHandler {
                         os.close();
                     }
                 } catch (Exception e) {
+                    System.err.println("Database error in login: " + e.getMessage());
                     String res = "Error: " + e.getMessage();
                     exchange.sendResponseHeaders(500, res.length());
                     OutputStream os = exchange.getResponseBody();

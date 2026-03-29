@@ -4,10 +4,11 @@ echo   SMART GYM MANAGEMENT SYSTEM
 echo =================================
 echo.
 
-REM Check if MySQL connector exists
-if not exist "mysql-connector-j-9.6.0.jar" (
-    echo MySQL Connector not found!
-    echo Please run download-mysql.bat first or download manually.
+REM Check if SQLite connector exists
+if not exist "sqlite-jdbc-3.45.1.0.jar" (
+    echo SQLite Connector not found!
+    echo Please download sqlite-jdbc-3.45.1.0.jar
+    echo Or run: curl -L -o sqlite-jdbc-3.45.1.0.jar "https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.45.1.0/sqlite-jdbc-3.45.1.0.jar"
     echo.
     pause
     exit /b 1
@@ -22,8 +23,8 @@ if not exist "src" (
     exit /b 1
 )
 
-echo Compiling Java files...
-javac -cp ".;mysql-connector-j-9.6.0.jar" src\*.java
+echo Compiling Java files with SQLite...
+javac -cp ".;sqlite-jdbc-3.45.1.0.jar" src\*.java
 
 if %errorlevel% neq 0 (
     echo.
@@ -36,9 +37,10 @@ echo.
 echo Compilation successful!
 echo.
 echo Starting server on http://localhost:8080
+echo Using SQLite database (gym_management.db)
 echo Press Ctrl+C to stop the server
 echo.
 
-java -cp ".;mysql-connector-j-9.6.0.jar" src.Main
+java -cp ".;sqlite-jdbc-3.45.1.0.jar" src.Main
 
 pause
